@@ -321,6 +321,7 @@ MIT License - see LICENSE file for details
 
 **Rakin Mohammed Rafeeq**
 
+- Email: rakinmohammedrafeeq@gmail.com
 - Portfolio: [rakinmohammedrafeeq.vercel.app](https://rakinmohammedrafeeq.vercel.app)
 - GitHub: [@rakinmohammedrafeeq](https://github.com/rakinmohammedrafeeq)
 
