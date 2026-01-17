@@ -1,239 +1,324 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
+    <title>Anuvad — Live Tab Audio Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-base: #07090E;
+            --bg-surface: rgba(15, 20, 32, 0.85);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --primary-gradient: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%);
+            --recording-gradient: linear-gradient(135deg, #EF4444 0%, #F43F5E 100%);
+            --neon-cyan: #06B6D4;
+            --neon-green: #10B981;
+            --text-primary: #F8FAFC;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
+            --font-main: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             width: 100%;
-            min-width: 400px;
-            min-height: 600px;
-            padding: 15px;
-            font-family: Arial, sans-serif;
-            background: white;
-            color: #282828;
-            margin: 0;
+            min-width: 360px;
+            min-height: 560px;
+            padding: 16px;
+            font-family: var(--font-main);
+            background: var(--bg-base);
+            color: var(--text-primary);
             position: relative;
-            border: 1px solid #EAEAEA;
+            line-height: 1.5;
         }
 
         .container {
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        h2 {
-            margin: 0 0 15px 0;
-            font-size: 18px;
-            color: #282828;
-            font-weight: 600;
+        .header-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFF 30%, #C084FC 80%, #F472B6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-pill {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--neon-cyan);
+            background: rgba(6, 182, 212, 0.12);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 2px 8px;
+            border-radius: 9999px;
         }
 
         .controls {
-            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .language-controls {
             display: flex;
             align-items: center;
-            gap: 6px;
-            flex-wrap: nowrap;
-            padding: 12px;
-            background: #EAEAEA;
-            border-radius: 8px;
-            margin: 10px 0;
+            gap: 8px;
+            padding: 10px 12px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
             font-size: 11px;
-            text-align: left;
-            border: 1px solid #d0d0d0;
-            overflow-x: auto;
         }
 
         .language-controls label {
-            font-size: 11px;
-            font-weight: bold;
-            color: #282828;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--neon-cyan);
             white-space: nowrap;
-            flex-shrink: 0;
-        }
-
-        .recording .language-controls {
-            background: #e8f5e8;
-            border: 1px solid #4CAF50;
-        }
-
-        .recording .language-controls label {
-            color: #2e7d32;
         }
 
         select {
             padding: 6px 8px;
-            border-radius: 4px;
-            border: 1px solid #d0d0d0;
+            border-radius: 6px;
+            border: 1px solid var(--border-subtle);
             font-size: 11px;
-            background: white;
-            color: #282828;
-            min-width: 80px;
-            flex-shrink: 0;
+            font-weight: 600;
+            background: #111827;
+            color: var(--text-primary);
+            flex: 1;
+            outline: none;
+            cursor: pointer;
         }
 
         select:focus {
-            outline: none;
-            border-color: #4CAF50;
+            border-color: #8B5CF6;
         }
 
         .arrow {
-            margin: 0 4px;
+            color: var(--text-muted);
             font-weight: bold;
-            color: #666;
-            flex-shrink: 0;
+        }
+
+        .server-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+        }
+
+        .server-row label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .server-row input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            outline: none;
         }
 
         .status {
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 6px;
-            font-weight: 500;
-            font-size: 12px;
-            border: 1px solid #EAEAEA;
+            padding: 8px 12px;
+            border-radius: 9999px;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 11px;
+            text-align: center;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
         }
 
-        .recording {
-            background: #ffebee;
-            border-color: #f44336;
-            color: #c62828;
+        .status.not-recording {
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            color: var(--neon-green);
         }
 
-        .not-recording {
-            background: #e8f5e8;
-            border-color: #4CAF50;
-            color: #2e7d32;
+        .status.recording {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.45);
+            color: #F87171;
+            box-shadow: 0 0 16px rgba(239, 68, 68, 0.25);
         }
 
-        .connecting {
-            background: #fff3e0;
-            border-color: #ff9800;
-            color: #e65100;
+        .status.connecting {
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            color: #FBBF24;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 8px;
         }
 
         .btn {
-            padding: 12px 24px;
-            margin: 8px 4px;
+            flex: 1;
+            padding: 10px 16px;
             border: none;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
+            border-radius: 9999px;
+            font-family: var(--font-main);
+            font-size: 12px;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.2s ease;
-            text-transform: none;
-        }
-
-        .btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        }
-
-        .btn:active {
-            transform: translateY(0);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
 
         .btn-start {
-            background: #4CAF50;
-            color: white;
+            background: var(--primary-gradient);
+            color: #FFF;
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.35);
         }
 
         .btn-start:hover {
-            background: #45a049;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
         }
 
         .btn-stop {
-            background: #f44336;
-            color: white;
-        }
-
-        .btn-stop:hover {
-            background: #da190b;
+            background: var(--recording-gradient);
+            color: #FFF;
+            box-shadow: 0 4px 16px rgba(239, 68, 68, 0.35);
         }
 
         .btn-clear {
-            background: #666;
-            color: white;
-            font-size: 12px;
-            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            flex: 0 0 auto;
+            padding: 10px 14px;
         }
 
         .btn-clear:hover {
-            background: #555;
+            background: rgba(255, 255, 255, 0.1);
+            color: #FFF;
         }
 
         .btn:disabled {
-            opacity: 0.5;
+            opacity: 0.35;
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
         }
 
         .results {
-            margin-top: 15px;
-            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 4px;
         }
 
         .result-section {
-            margin: 12px 0;
-            padding: 12px;
-            background: #EAEAEA;
-            border-radius: 6px;
-            border: 1px solid #d0d0d0;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
         .result-title {
-            font-weight: 600;
-            font-size: 12px;
-            margin-bottom: 8px;
-            color: #282828;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 11px;
+            color: #A5B4FC;
+            letter-spacing: 0.5px;
         }
 
         .result-text {
-            font-size: 11px;
-            line-height: 1.5;
-            min-height: 45px;
-            max-height: 85px;
+            font-size: 13px;
+            line-height: 1.6;
+            min-height: 60px;
+            max-height: 120px;
             overflow-y: auto;
             word-wrap: break-word;
-            color: #282828;
-            background: white;
-            padding: 8px;
-            border-radius: 4px;
-            border: 1px solid #d0d0d0;
+            color: var(--text-primary);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .result-text::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .result-text::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 9999px;
         }
 
         .partial {
-            opacity: 0.7;
+            color: #38BDF8;
             font-style: italic;
-            color: #666;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
         }
 
         .final {
-            opacity: 1;
+            color: #F8FAFC;
             font-style: normal;
-            color: #282828;
         }
 
         .pin-info {
-            margin-top: 12px;
-            font-size: 10px;
-            color: #666;
-            line-height: 1.4;
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 4px;
         }
-
-
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h2>🌐 Tab Audio Translator</h2>
+        <div class="header-title-row">
+            <div class="header-title">
+                <span>⚡</span>
+                <span>ANUVAD</span>
+            </div>
+            <span class="header-pill">TAB AUDIO</span>
+        </div>
 
         <div class="controls">
             <div class="language-controls">
-                <label for="sourceLanguageSelect">Speak in:</label>
+                <label for="sourceLanguageSelect">SPEAK:</label>
                 <select id="sourceLanguageSelect">
                     <option value="en">English</option>
                     <option value="es">Spanish</option>
@@ -250,7 +335,7 @@
 
                 <span class="arrow">→</span>
 
-                <label for="targetLanguageSelect">Translate to:</label>
+                <label for="targetLanguageSelect">TO:</label>
                 <select id="targetLanguageSelect">
                     <option value="es">Spanish</option>
                     <option value="fr">French</option>
@@ -266,34 +351,40 @@
                     <option value="en">English</option>
                 </select>
             </div>
+
+            <div class="server-row">
+                <label for="serverUrl">WS GATEWAY:</label>
+                <input type="text" id="serverUrl" value="ws://127.0.0.1:8000/ws" placeholder="ws://127.0.0.1:8000/ws">
+            </div>
         </div>
 
         <div id="status" class="status not-recording">
-            Ready to translate
+            READY TO STREAM
         </div>
 
-        <button id="startBtn" class="btn btn-start">Start Translation</button>
-        <button id="stopBtn" class="btn btn-stop" disabled>Stop Translation</button>
-        <button id="clearBtn" class="btn btn-clear">Clear Text</button>
+        <div class="btn-row">
+            <button id="startBtn" class="btn btn-start">🎙️ Start Translation</button>
+            <button id="stopBtn" class="btn btn-stop" disabled>⏹ Stop</button>
+            <button id="clearBtn" class="btn btn-clear">🧹 Clear</button>
+        </div>
 
         <div class="results">
             <div class="result-section">
-                <div id="originalLabel" class="result-title">🎤 Original (English)</div>
+                <div id="originalLabel" class="result-title">ORIGINAL SPEECH (ENGLISH)</div>
                 <div id="transcription" class="result-text">Waiting for audio...</div>
             </div>
 
             <div class="result-section">
-                <div id="translationLabel" class="result-title">🌍 Translation (Spanish)</div>
+                <div id="translationLabel" class="result-title">LIVE TRANSLATION (SPANISH)</div>
                 <div id="translation" class="result-text">Waiting for translation...</div>
             </div>
         </div>
 
         <div class="pin-info">
-            💡 Change languages while recording • Side panel stays open while browsing
+            💡 Captures live audio playing in your active browser tab
         </div>
     </div>
 
     <script src="sidepanel.js"></script>
 </body>
-
 </html>

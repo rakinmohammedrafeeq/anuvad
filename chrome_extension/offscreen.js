@@ -44,9 +44,10 @@ chrome.runtime.onMessage.addListener(async (message) => {
 
 async function connectToServer(languages) {
   return new Promise((resolve, reject) => {
-    console.log('🔌 Connecting to localhost:43007...');
+    const wsUrl = (languages && languages.serverUrl) || (currentLanguages && currentLanguages.serverUrl) || 'ws://127.0.0.1:8000/ws';
+    console.log('🔌 Connecting to Anuvad backend:', wsUrl);
     
-    socket = new WebSocket('ws://localhost:43007');
+    socket = new WebSocket(wsUrl);
 
     socket.onopen = () => {
       console.log('✅ Connected to Whisper server');
@@ -69,10 +70,7 @@ async function connectToServer(languages) {
       
       // Send start message
       socket.send(JSON.stringify({ type: 'start' }));
-      
-      setTimeout(() => {
-        resolve();
-      }, 500);
+      resolve();
     };
 
     socket.onclose = () => {
@@ -209,8 +207,8 @@ async function startTranslation(streamId, languages) {
     // Continue to play the captured audio to the user
     source.connect(audioContext.destination);
     
-    // Create processor for real-time audio processing
-    processor = audioContext.createScriptProcessor(4096, 1, 1);
+    // Create processor for real-time low-latency audio streaming (1024 samples ~ 64ms)
+    processor = audioContext.createScriptProcessor(1024, 1, 1);
     
     processor.onaudioprocess = (e) => {
       if (isTranslating && socket && socket.readyState === WebSocket.OPEN) {

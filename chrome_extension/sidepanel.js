@@ -95,13 +95,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
+            const serverUrl = document.getElementById('serverUrl')?.value || 'ws://127.0.0.1:8000/ws';
+
             // Send message to service worker to start translation with languages
             await chrome.runtime.sendMessage({
                 type: 'start-translation-from-sidepanel',
                 tabId: tab.id,
                 languages: {
                     sourceLanguage: sourceLanguage,
-                    targetLanguage: targetLanguage
+                    targetLanguage: targetLanguage,
+                    serverUrl: serverUrl
                 }
             });
             
