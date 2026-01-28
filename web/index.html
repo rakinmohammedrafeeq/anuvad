@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anuvad — Real-Time Multilingual Speech Intelligence</title>
+    <!-- Favicon & Touch Icons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+    <!-- Google Fonts for Modern Gen-Z Aesthetics with System Fallback -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Ambient Cyber Glows -->
+    <div class="ambient-glow orb-1"></div>
+    <div class="ambient-glow orb-2"></div>
+    <div class="ambient-glow orb-3"></div>
+
+    <div class="app-wrapper">
+        <!-- Header -->
+        <header class="glass-header">
+            <div class="brand-container">
+                <div class="brand-avatar">
+                    <span class="avatar-glow"></span>
+                    <img src="/assets/logo.png" alt="Anuvad Logo" class="brand-logo-img">
+                </div>
+                <div class="brand-meta">
+                    <div class="brand-title-row">
+                        <h1 class="glitch-title">ANUVAD</h1>
+                        <span class="version-tag">LOCAL ASR v2.0</span>
+                    </div>
+                    <p class="brand-subtitle">Real-Time Multilingual Speech Intelligence & Dual-Pane Translation</p>
+                </div>
+            </div>
+
+            <div class="header-badges">
+                <div class="badge-pill private-pill">
+                    <span class="icon">🔒</span>
+                    <span>100% Private & Local</span>
+                </div>
+                <div class="badge-pill latency-pill">
+                    <span class="icon">⚡</span>
+                    <span>Sub-Second Latency</span>
+                </div>
+                <div id="connectionBadge" class="connection-badge">
+                    <span class="status-pulse"></span>
+                    <span id="statusText">Ready</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Alert Notification Box -->
+        <div id="alertBox" class="alert-banner"></div>
+
+        <!-- Master Command Bento -->
+        <section class="bento-card command-card">
+            <!-- Row 1: Action Controls & Language Selectors -->
+            <div class="command-row">
+                <div class="button-group">
+                    <button id="toggleBtn" class="btn btn-hero">
+                        <span class="btn-icon">🎙️</span>
+                        <span class="btn-text">Start Listening</span>
+                        <span class="btn-glow"></span>
+                    </button>
+
+                    <button id="clearBtn" class="btn btn-secondary" title="Clear all captions">
+                        <span class="btn-icon">🗑️</span>
+                        <span>Clear</span>
+                    </button>
+
+                    <button id="exportBtn" class="btn btn-secondary" title="Export transcript as text file">
+                        <span class="btn-icon">📥</span>
+                        <span>Export</span>
+                    </button>
+                </div>
+
+                <!-- Language Hub -->
+                <div class="language-hub">
+                    <div class="lang-selector-card">
+                        <span class="lang-label">SPEAK IN</span>
+                        <div class="select-wrapper">
+                            <span class="select-icon">🗣️</span>
+                            <select id="sourceLangSelect">
+                                <option value="auto">Auto Detect</option>
+                                <option value="en" selected>English</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                                <option value="de">German</option>
+                                <option value="hi">Hindi</option>
+                                <option value="it">Italian</option>
+                                <option value="pt">Portuguese</option>
+                                <option value="ja">Japanese</option>
+                                <option value="ko">Korean</option>
+                                <option value="zh">Chinese</option>
+                                <option value="ar">Arabic</option>
+                                <option value="ru">Russian</option>
+                                <option value="nl">Dutch</option>
+                                <option value="tr">Turkish</option>
+                                <option value="pl">Polish</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button id="swapLangBtn" class="swap-icon-btn" title="Swap languages">
+                        ⇄
+                    </button>
+
+                    <div class="lang-selector-card">
+                        <span class="lang-label">TRANSLATE TO</span>
+                        <div class="select-wrapper">
+                            <span class="select-icon">🌍</span>
+                            <select id="targetLangSelect">
+                                <option value="es" selected>Spanish</option>
+                                <option value="en">English</option>
+                                <option value="fr">French</option>
+                                <option value="de">German</option>
+                                <option value="hi">Hindi</option>
+                                <option value="it">Italian</option>
+                                <option value="pt">Portuguese</option>
+                                <option value="ja">Japanese</option>
+                                <option value="ko">Korean</option>
+                                <option value="zh">Chinese</option>
+                                <option value="ar">Arabic</option>
+                                <option value="ru">Russian</option>
+                                <option value="nl">Dutch</option>
+                                <option value="tr">Turkish</option>
+                                <option value="pl">Polish</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Language Chips -->
+            <div class="quick-chips-row">
+                <span class="chips-label">QUICK TARGET:</span>
+                <div class="chips-list">
+                    <button class="lang-chip active" data-lang="es">🇪🇸 Spanish</button>
+                    <button class="lang-chip" data-lang="fr">🇫🇷 French</button>
+                    <button class="lang-chip" data-lang="de">🇩🇪 German</button>
+                    <button class="lang-chip" data-lang="hi">🇮🇳 Hindi</button>
+                    <button class="lang-chip" data-lang="ja">🇯🇵 Japanese</button>
+                    <button class="lang-chip" data-lang="ko">🇰🇷 Korean</button>
+                    <button class="lang-chip" data-lang="zh">🇨🇳 Chinese</button>
+                    <button class="lang-chip" data-lang="en">🇺🇸 English</button>
+                </div>
+            </div>
+
+            <!-- Audio Waveform Visualizer & Server URL -->
+            <div class="metrics-row">
+                <div class="visualizer-container">
+                    <div class="meter-header">
+                        <span class="meter-title">LIVE AUDIO ENERGY</span>
+                        <span id="micVolText" class="meter-val">0%</span>
+                    </div>
+                    <!-- Equalizer frequency bars -->
+                    <div id="visualizerBars" class="eq-bars">
+                        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                        <div class="bar"></div><div class="bar"></div>
+                    </div>
+                </div>
+
+                <div class="url-input-container">
+                    <label for="serverUrl" class="url-label">BACKEND GATEWAY</label>
+                    <div class="url-field-wrap">
+                        <span class="url-prefix">WS</span>
+                        <input type="text" id="serverUrl" class="server-url-input" placeholder="ws://127.0.0.1:8000/ws">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dual Live Stream Display Panels -->
+        <main class="panels-grid">
+            <!-- Panel 1: Original Spoken Audio -->
+            <section class="caption-card card-source">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <span class="badge-icon">🎙️</span>
+                        <div>
+                            <h2 class="card-heading">Original Speech</h2>
+                            <p class="card-subheading">Live streaming transcription</p>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <span id="originalLangTag" class="tag-pill tag-primary">English</span>
+                        <span id="transcriptWordCount" class="counter-badge">0 words</span>
+                        <button id="copyTranscriptBtn" class="icon-btn" title="Copy transcript to clipboard">
+                            📋
+                        </button>
+                    </div>
+                </div>
+
+                <div id="transcriptBox" class="caption-scroll-area">
+                    <div class="empty-state">
+                        <div class="empty-icon">🎧</div>
+                        <h3>Waiting for speech...</h3>
+                        <p>Click "Start Listening" and speak into your microphone. Words stream in real-time.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Panel 2: Live Translation -->
+            <section class="caption-card card-target">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <span class="badge-icon">🌍</span>
+                        <div>
+                            <h2 class="card-heading">Live Translation</h2>
+                            <p class="card-subheading">Synchronized phrase translation</p>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <span id="translationLangTag" class="tag-pill tag-accent">Spanish</span>
+                        <span id="translationWordCount" class="counter-badge">0 words</span>
+                        <button id="copyTranslationBtn" class="icon-btn" title="Copy translation to clipboard">
+                            📋
+                        </button>
+                    </div>
+                </div>
+
+                <div id="translationBox" class="caption-scroll-area">
+                    <div class="empty-state">
+                        <div class="empty-icon">✨</div>
+                        <h3>Translations will appear here</h3>
+                        <p>Locked speech segments are instantly translated into your target language.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Toast Notification -->
+        <div id="toastNotification" class="toast-pill">
+            <span id="toastMessage">Copied to clipboard! ✨</span>
+        </div>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <p>⚡ <strong>ANUVAD</strong> • Local-First Faster-Whisper ASR • 100% Client-Side Privacy</p>
+                <div class="footer-links">
+                    <span>Engineered with integrity</span>
+                    <span>•</span>
+                    <a href="https://github.com/rakinmohammedrafeeq/anuvad" target="_blank" rel="noopener">GitHub</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
